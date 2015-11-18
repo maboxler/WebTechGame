@@ -1,0 +1,24 @@
+
+# Eclipse
+.settings/
+bin/
+
+# Intellij
+/.idea/
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Gradle
+/.gradle/
+/build/
+
+# Sonar
+/.sonar/
+
+# Application
+/sudoku.log

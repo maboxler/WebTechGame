@@ -1,10 +1,8 @@
 package htwg.se.chess;
 
 import java.util.Scanner;
-
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
 import htwg.se.controller.Icontroller;
 import htwg.se.model.*;
 import htwg.se.view.GUI;
@@ -31,20 +29,16 @@ public class Init {
 				cc = injector.getInstance(Icontroller.class);	
 				
 				tui = new TUI(cc);
-				gui = new GUI(cc);	
+				//gui = new GUI(cc);	
 				
-				GameField gameField = new GameField();
+				new GameField();
 			
 				//ChessController cc = new ChessController(gameField);
-				scanner = new Scanner(System.in);
+				//scanner = new Scanner(System.in);
 						
 				tui.update(null);
 				
 				
-				
-//				while(!gameField.blackWon() && !gameField.whiteWon()) {
-//					tui.processInputLine(scanner.nextLine());
-//				}
 		
 	}
 		
@@ -70,7 +64,7 @@ public class Init {
 	}	
 
 	public static void main(String[] args) {
-		Init init = Init.getInstance();
+		Init.getInstance();
 	}
 
 	public String getWTui() {

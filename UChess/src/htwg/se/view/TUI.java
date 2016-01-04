@@ -1,9 +1,19 @@
 package htwg.se.view;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
+import htwg.se.controller.Icontroller;
 import htwg.se.model.Field;
-import htwg.se.controller.*;
 import htwg.util.Event;
 import htwg.util.IObserver;
 import htwg.util.Point;
@@ -13,8 +23,12 @@ public class TUI implements UI, IObserver {
 
 	Icontroller controller;
 	boolean firstpressed;
-	Point first;
-
+	Point first;		
+	 JSONArray figures = new JSONArray();
+	 
+	  Map<String, String> m1 = new LinkedHashMap<String, String>();
+	  List<LinkedHashMap>  l1 = new LinkedList<LinkedHashMap>();
+	
 	public TUI(Icontroller controller) {
 		this.controller = controller;
 		firstpressed = false;
@@ -40,6 +54,9 @@ public class TUI implements UI, IObserver {
 				if (field[x][y].getChessPiece() != null) {
 					testAusgabe += field[x][y].getChessPiece().getcolor();
 					testAusgabe += field[x][y].getChessPiece().toChar();
+
+					jsonArrayBuilder(field, y, x);
+					
 				} else {
 					testAusgabe += "  ";
 				}
@@ -54,7 +71,24 @@ public class TUI implements UI, IObserver {
 		
 		feld = feld.replaceAll("\n", "<br>"); 
 		
+		
+		 System.out.println(figures);
+		
+		
+		
 		return feld;
+	}
+
+	public String getFigures() {
+		return ""+figures;
+	}
+
+	private void jsonArrayBuilder(Field[][] field, int y, int x) {
+		m1.put("figure",""+field[x][y].getChessPiece().toChar());		  
+		m1.put("color",""+field[x][y].getChessPiece().getcolor());		  
+		m1.put("bg", "w"); 	
+		m1.put("pos", ""+x+""+y);
+		figures.add(m1);
 	}	
 
 	private String createYCoordinates(String testAusgabe, int y) {

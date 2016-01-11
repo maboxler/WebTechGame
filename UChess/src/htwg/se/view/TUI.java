@@ -1,22 +1,18 @@
 package htwg.se.view;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.util.HashMap;
+import htwg.se.controller.Icontroller;
+import htwg.se.model.Field;
+import htwg.util.Event;
+import htwg.util.IObserver;
+import htwg.util.Point;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import htwg.se.controller.Icontroller;
-import htwg.se.model.Field;
-import htwg.util.Event;
-import htwg.util.IObserver;
-import htwg.util.Point;
 
 public class TUI implements UI, IObserver {
 	static final Logger log = Logger.getLogger(TUI.class.getName());
@@ -24,7 +20,8 @@ public class TUI implements UI, IObserver {
 	Icontroller controller;
 	boolean firstpressed;
 	Point first;		
-	 JSONArray figures = new JSONArray();
+
+	ArrayList figures = new ArrayList<String>();
 	 
 	  Map<String, String> m1 = new LinkedHashMap<String, String>();
 	  List<LinkedHashMap>  l1 = new LinkedList<LinkedHashMap>();
@@ -72,7 +69,7 @@ public class TUI implements UI, IObserver {
 		feld = feld.replaceAll("\n", "<br>"); 
 		
 		
-		 System.out.println(figures);
+		// System.out.println(figures);
 		
 		
 		
@@ -80,15 +77,29 @@ public class TUI implements UI, IObserver {
 	}
 
 	public String getFigures() {
-		return ""+figures;
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"type\":\"field\",\"figures\" : [");
+		for(int i = 0; i < figures.size(); i++){
+			sb.append(figures.get(i));
+			if(i < figures.size() - 1){
+				sb.append(",");
+			}
+		}
+		sb.append("]}");
+		figures.clear();
+		System.out.println(sb.toString());
+		return sb.toString();
 	}
 
 	private void jsonArrayBuilder(Field[][] field, int y, int x) {
-		m1.put("figure",""+field[x][y].getChessPiece().toChar());		  
-		m1.put("color",""+field[x][y].getChessPiece().getcolor());		  
-		m1.put("bg", "w"); 	
-		m1.put("pos", ""+x+""+y);
-		figures.add(m1);
+		
+		figures.add("{\"figure\":\"" + field[x][y].getChessPiece().toChar() + "\", \"color\":\"" + field[x][y].getChessPiece().getcolor() + "\", \"bg\":\"w\"," + "\"pos\":\""+x + y + "\"}");
+		
+//		m1.put("figure",""+field[x][y].getChessPiece().toChar());		  
+//		m1.put("color",""+field[x][y].getChessPiece().getcolor());		  
+//		m1.put("bg", "w"); 	
+//		m1.put("pos", ""+x+""+y);
+//		figures.add(m1);
 	}	
 
 	private String createYCoordinates(String testAusgabe, int y) {

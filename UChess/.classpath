@@ -10,6 +10,5 @@
 	<classpathentry kind="lib" path="lib/guice-assistedinject-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/javax.inject.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Marco/Desktop/WEbtech game/WebTechGame/UChess/lib/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

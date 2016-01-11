@@ -34,10 +34,9 @@ public class Init {
 				new GameField();
 			
 				//ChessController cc = new ChessController(gameField);
-				//scanner = new Scanner(System.in);
+				scanner = new Scanner(System.in);
 						
 				tui.update(null);
-				
 				
 		
 	}

@@ -13,27 +13,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
 public class TUI implements UI, IObserver {
 	static final Logger log = Logger.getLogger(TUI.class.getName());
 
 	Icontroller controller;
 	boolean firstpressed;
-	Point first;		
+	Point first;
 
-	ArrayList figures = new ArrayList<String>();
-	 
-	  Map<String, String> m1 = new LinkedHashMap<String, String>();
-	  List<LinkedHashMap>  l1 = new LinkedList<LinkedHashMap>();
-	
+	ArrayList<String> figures = new ArrayList<String>();
+	String bgColor = "w";
+	Map<String, String> m1 = new LinkedHashMap<String, String>();
+	List<LinkedHashMap> l1 = new LinkedList<LinkedHashMap>();
+
 	public TUI(Icontroller controller) {
 		this.controller = controller;
 		firstpressed = false;
 		first = null;
 		controller.addObserver(this);
 	}
-	
-	public Icontroller getTuiController() {	
+
+	public Icontroller getTuiController() {
 		return controller;
 	}
 
@@ -41,47 +40,66 @@ public class TUI implements UI, IObserver {
 		Field field[][] = controller.getField();
 		String testAusgabe = "";
 		String feld = "";
-
+		
+		int count1=0,count2=0;
+		
 		testAusgabe = this.createXCoordinates(testAusgabe);
 		for (int y = 7; y >= 0; --y) {
 			testAusgabe = createYCoordinates(testAusgabe, y);
-			
+
 			testAusgabe += "|";
 			for (int x = 0; x <= 7; ++x) {
+
 				if (field[x][y].getChessPiece() != null) {
 					testAusgabe += field[x][y].getChessPiece().getcolor();
 					testAusgabe += field[x][y].getChessPiece().toChar();
+					jsonArrayBuilder(field, y, x, false);
+					count1++;
 
-					jsonArrayBuilder(field, y, x);
-					
+					if (x != 7) {
+						changeColor();
+					}
+
 				} else {
 					testAusgabe += "  ";
+					jsonArrayBuilder(field, y, x, true);
+					count2++;
+					if (x != 7) {
+						changeColor();
+					}
 				}
 				testAusgabe += "|";
 			}
 
 			feld += testAusgabe + "\n";
 			testAusgabe = "";
+			
 		}
+		
+		System.out.println("count1: " + count1);
+		System.out.println("count2: " + count2);
+		
 		message(feld);
 		message(controller.getStatusMessage());
-		
-		feld = feld.replaceAll("\n", "<br>"); 
-		
-		
-		// System.out.println(figures);
-		
-		
-		
+
+		feld = feld.replaceAll("\n", "<br>");
+
 		return feld;
+	}
+
+	private void changeColor() {
+		if (bgColor == "w") {
+			bgColor = "b";
+		} else
+			bgColor = "w";
 	}
 
 	public String getFigures() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"type\":\"field\",\"figures\" : [");
-		for(int i = 0; i < figures.size(); i++){
+		for (int i = 0; i < figures.size(); i++) {
 			sb.append(figures.get(i));
-			if(i < figures.size() - 1){
+			if (i < figures.size() - 1) {
 				sb.append(",");
 			}
 		}
@@ -91,16 +109,20 @@ public class TUI implements UI, IObserver {
 		return sb.toString();
 	}
 
-	private void jsonArrayBuilder(Field[][] field, int y, int x) {
+	private void jsonArrayBuilder(Field[][] field, int y, int x, boolean leer) {
+
+		if(!leer){
+			figures.add("{\"figure\":\"" + field[x][y].getChessPiece().toChar() + "\", \"color\":\""
+					+ field[x][y].getChessPiece().getcolor() + "\", \"bg\":\"" + bgColor + "\"," + "\"pos\":\"" + x + y
+					+ "\"}");
+		}
+		else {
+			figures.add("{\"figure\":\"" + "x" + "\", \"color\":\""
+					+ "x" + "\", \"bg\":\"" + bgColor + "\"," + "\"pos\":\"" + x + y
+					+ "\"}");
+		}
 		
-		figures.add("{\"figure\":\"" + field[x][y].getChessPiece().toChar() + "\", \"color\":\"" + field[x][y].getChessPiece().getcolor() + "\", \"bg\":\"w\"," + "\"pos\":\""+x + y + "\"}");
-		
-//		m1.put("figure",""+field[x][y].getChessPiece().toChar());		  
-//		m1.put("color",""+field[x][y].getChessPiece().getcolor());		  
-//		m1.put("bg", "w"); 	
-//		m1.put("pos", ""+x+""+y);
-//		figures.add(m1);
-	}	
+	}
 
 	private String createYCoordinates(String testAusgabe, int y) {
 		testAusgabe += y + "";
@@ -162,7 +184,7 @@ public class TUI implements UI, IObserver {
 		testAusgabe = this.createXCoordinates(testAusgabe);
 		for (int y = 7; y >= 0; --y) {
 			testAusgabe = createYCoordinates(testAusgabe, y);
-			
+
 			testAusgabe += "|";
 			for (int x = 0; x <= 7; ++x) {
 				if (field[x][y].getChessPiece() != null) {
@@ -177,9 +199,9 @@ public class TUI implements UI, IObserver {
 			feld += testAusgabe + "\n";
 			testAusgabe = "";
 		}
-		
-		feld = feld.replaceAll("\n", "<br>"); 
-		
+
+		feld = feld.replaceAll("\n", "<br>");
+
 		return feld;
 	}
 

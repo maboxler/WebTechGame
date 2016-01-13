@@ -38,7 +38,7 @@ public class Init {
 						
 				tui.update(null);
 				
-		
+				//tui.getFigures();
 	}
 		
 	public TUI getTui() {

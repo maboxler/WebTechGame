@@ -44,6 +44,7 @@ public class TUI implements UI, IObserver {
 		int count1=0,count2=0;
 		
 		testAusgabe = this.createXCoordinates(testAusgabe);
+		figures.clear();
 		for (int y = 7; y >= 0; --y) {
 			testAusgabe = createYCoordinates(testAusgabe, y);
 
@@ -104,7 +105,6 @@ public class TUI implements UI, IObserver {
 			}
 		}
 		sb.append("]}");
-		figures.clear();
 		System.out.println(sb.toString());
 		return sb.toString();
 	}

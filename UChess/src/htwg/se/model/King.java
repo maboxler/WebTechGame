@@ -64,18 +64,9 @@ public class King extends Chesspiece {
 	}
 
 	private Point[] listToArray() {
-		Point pointField[] = new Point[validMovesList.size()];
-		int i = 0;
-		for (Point point : validMovesList) {
-			
-			if(i == 0) {
-				i++;	
-			} else {
-				pointField[i-1] = point;
-				i++;
-			}
-			
-		}
+		Point pointField[] = new Point[1];
+		
+		pointField[0] = validMovesList.get(0);
 		validMovesList.clear();
 
 		return pointField;
@@ -90,15 +81,11 @@ public class King extends Chesspiece {
 	}
 
 	private void leftHorizontal(int x, int y) {
-		for (int i = this.x; i >= x; i--) {
-			validMovesList.add(new Point(i, y));
-		}
+			validMovesList.add(new Point(x, y));
 	}
 
 	private void rightHorizontal(int x, int y) {
-		for (int i = this.x; i <= x; i++) {
-			validMovesList.add(new Point(i, y));
-		}
+			validMovesList.add(new Point(x, y));
 	}
 
 	private void vertical(int x, int y) {
@@ -110,15 +97,11 @@ public class King extends Chesspiece {
 	}
 
 	private void upVertical(int x, int y) {
-		for (int i = this.y; i <= y; i++) {
-			validMovesList.add(new Point(x, i));
-		}
+			validMovesList.add(new Point(x, y));
 	}
 
 	private void downVertical(int x, int y) {
-		for (int i = this.y; i >= y; i--) {
-			validMovesList.add(new Point(x, i));
-		}
+			validMovesList.add(new Point(x, y));
 	}
 
 	private void diagonal(int x, int y) {
@@ -140,20 +123,12 @@ public class King extends Chesspiece {
 	}
 
 	private void leftUpDiagonal(int x) {
-		int n = 0;
-		for (int i = x; i >= x; i--) {
-			validMovesList.add(new Point(this.x - n, this.y + n));
-			n++;
-		}
+			validMovesList.add(new Point(this.x - 1, this.y + 1));
 
 	}
 
 	private void rightUpDiagonal(int x) {
-		int n = 0;
-		for (int i = this.x; i <= x; i++) {
-			validMovesList.add(new Point(this.x + n, this.y + n));
-			n++;
-		}
+			validMovesList.add(new Point(this.x + 1, this.y + 1));
 	}
 
 	private void downDiagonal(int x, int y) {
@@ -167,19 +142,15 @@ public class King extends Chesspiece {
 
 	private void leftDownDiagonal(int x) {
 		int n = 0;
-		for (int i = this.x; i >= x; i--) {
-			validMovesList.add(new Point(this.x - n, this.y - n));
-			n++;
-		}
+		//for (int i = this.x; i >= x; i--) {
+			validMovesList.add(new Point(this.x - 1, this.y - 1));
+			//n++;
+		//}
 
 	}
 
 	private void rightDownDiagonal(int x) {
-		int n = 0;
-		for (int i = this.x; i <= x; i++) {
-			validMovesList.add(new Point(this.x + n, this.y - n));
-			n++;
-		}
+			validMovesList.add(new Point(this.x + 1, this.y - 1));
 
 	}
 

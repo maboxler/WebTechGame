@@ -35,7 +35,9 @@ public class Init {
 			
 				//ChessController cc = new ChessController(gameField);
 				scanner = new Scanner(System.in);
-
+				
+				System.out.println("erstes" + tui.getFigures());
+				System.out.println("zweites" + tui.getFigures());
 				tui.update(null);
 				//tui.getFigures();
 	}

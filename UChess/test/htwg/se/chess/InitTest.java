@@ -16,7 +16,7 @@ public class InitTest {
 
 	@Test
 	public void test() {
-		System.out.println(Init.getInstance().getWTui());
+		System.out.println(new Init().getWTui());
 		
 	}
 

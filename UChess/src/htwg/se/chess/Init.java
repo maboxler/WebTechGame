@@ -20,7 +20,7 @@ public class Init {
 	private  Icontroller cc;
 	private  Scanner scanner;
 	
-	private Init() {
+	public Init() {
 
 		// Set up Google Guice Dependency Injector
 				injector = Guice.createInjector(new ChessModule());
@@ -35,9 +35,8 @@ public class Init {
 			
 				//ChessController cc = new ChessController(gameField);
 				scanner = new Scanner(System.in);
-						
+
 				tui.update(null);
-				
 				//tui.getFigures();
 	}
 		
@@ -53,17 +52,8 @@ public class Init {
 		return cc;
 	}
 
-	public static Init getInstance() {
-		
-		if(Init.instance == null) {
-		   Init.instance = new Init();
-		}  
-		   
-		return Init.instance;
-	}	
-
 	public static void main(String[] args) {
-		Init.getInstance();
+		new Init();
 	}
 
 	public String getWTui() {

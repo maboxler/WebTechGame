@@ -10,5 +10,6 @@ public interface Icontroller extends IObservable{
 	public void move(Point start, Point goal);
 	public void reset();
 	public boolean checkWin();
+	public String getWinner();
 	
 }

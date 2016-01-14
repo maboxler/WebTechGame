@@ -24,8 +24,8 @@ public class ChessController extends Observable implements Icontroller{
 	
 	public String getStatusMessage() {
 		if(blackturn)
-			return "It's blacks turn";
-		return "It's whites turn";
+			return "black";
+		return "white";
 	}
 	
 	public void move(Point start, Point goal) {

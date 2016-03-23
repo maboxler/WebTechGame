@@ -1,17 +1,11 @@
+/*
+ * Decompiled with CFR 0_114.
+ */
 package htwg.se.view;
 
-
-
 public interface UI {
+    public void restart();
 
-	/*
-	 * Resets the Game
-	 */
-	public void restart();
-	/*
-	 * tells the Controller, which Field has been selected
-	 */
-	public void pressed(int x, int y);
-	
-
+    public void pressed(int var1, int var2);
 }
+

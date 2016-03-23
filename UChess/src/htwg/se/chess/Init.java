@@ -1,64 +1,61 @@
+/*
+ * Decompiled with CFR 0_114.
+ * 
+ * Could not load the following classes:
+ *  com.google.inject.Guice
+ *  com.google.inject.Injector
+ *  com.google.inject.Module
+ */
 package htwg.se.chess;
 
-import java.util.Scanner;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Module;
+import htwg.se.chess.ChessModule;
 import htwg.se.controller.Icontroller;
-import htwg.se.model.*;
+import htwg.se.model.GameField;
 import htwg.se.view.GUI;
 import htwg.se.view.TUI;
-
-
+import htwg.util.Event;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
 
 public class Init {
-	
-	
-	private static  Init instance;
-	private  TUI tui;
-	private  GUI gui;
-	private  Injector injector;
-	private  Icontroller cc;
-	private  Scanner scanner;
-	
-	public Init() {
+    private static Init instance;
+    private TUI tui;
+    private GUI gui;
+    private Injector injector = Guice.createInjector((Module[])new Module[]{new ChessModule()});
+    private Icontroller cc = (Icontroller)this.injector.getInstance((Class)Icontroller.class);
+    private Scanner scanner;
 
-		// Set up Google Guice Dependency Injector
-				injector = Guice.createInjector(new ChessModule());
-				
-				// Build up the application, resolving dependencies automatically by Guice
-				cc = injector.getInstance(Icontroller.class);	
-				
-				tui = new TUI(cc);
-				//gui = new GUI(cc);	
-				
-				new GameField();
-			
-				//ChessController cc = new ChessController(gameField);
-				scanner = new Scanner(System.in);
-				
-				System.out.println("erstes" + tui.getFigures());
-				System.out.println("zweites" + tui.getFigures());
-				tui.update(null);
-				//tui.getFigures();
-	}
-		
-	public TUI getTui() {
-		return tui;
-	}
+    public Init() {
+        this.tui = new TUI(this.cc);
+        new htwg.se.model.GameField();
+        this.scanner = new Scanner(System.in);
+        System.out.println("erstes" + this.tui.getFigures());
+        System.out.println("zweites" + this.tui.getFigures());
+        this.tui.update(null);
+    }
 
-	public GUI getGui() {
-		return gui;
-	}
+    public TUI getTui() {
+        return this.tui;
+    }
 
-	public Icontroller getCc() {
-		return cc;
-	}
+    public GUI getGui() {
+        return this.gui;
+    }
 
-	public static void main(String[] args) {
-		new Init();
-	}
+    public Icontroller getCc() {
+        return this.cc;
+    }
 
-	public String getWTui() {
-		return tui.getWtui();
-	}
+    public static void main(String[] args) {
+        new htwg.se.chess.Init();
+    }
+
+    public String getWTui() {
+        return this.tui.getWtui();
+    }
 }
+

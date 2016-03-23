@@ -1,6 +1,11 @@
+/*
+ * Decompiled with CFR 0_114.
+ */
 package htwg.util;
 
+import htwg.util.Event;
 
 public interface IObserver {
-	void update(Event e);
+    public void update(Event var1);
 }
+

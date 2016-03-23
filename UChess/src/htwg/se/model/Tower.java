@@ -1,139 +1,134 @@
+/*
+ * Decompiled with CFR 0_114.
+ */
 package htwg.se.model;
 
-import java.util.ArrayList;
-
+import htwg.se.model.Chesspiece;
 import htwg.util.Point;
-
+import java.util.ArrayList;
 import java.util.List;
 
-public class Tower extends Chesspiece {
+public class Tower
+extends Chesspiece {
+    private List<Point> validMovesList = new ArrayList<Point>();
 
+    public Tower(int x, int y, char color) {
+        super(x, y, color);
+    }
 
-	private List<Point> validMovesList;
+    @Override
+    public Point[] validMove(int x, int y) {
+        if (this.equalPosition(x, y) || this.outRange(x, y) || this.possibleMove(x, y)) {
+            return null;
+        }
+        this.whichDirection(x, y);
+        return this.listToArray();
+    }
 
-	public Tower(int x, int y, char color) {
-		super(x, y, color);
-		validMovesList = new ArrayList<Point>();
-	}
+    private boolean possibleMove(int x, int y) {
+        ArrayList<Point> allMoveList = new ArrayList<Point>();
+        Point move = new Point(x, y);
+        allMoveList.add(new Point(this.x, y));
+        allMoveList.add(new Point(x, this.y));
+        for (Point point : allMoveList) {
+            if (!move.equals(point)) continue;
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public Point[] validMove(int x, int y) {
+    private boolean outRange(int x, int y) {
+        if (x >= 8 || x < 0) {
+            return true;
+        }
+        if (y >= 8 || y < 0) {
+            return true;
+        }
+        return false;
+    }
 
-		if (equalPosition(x, y) || outRange(x,y) || possibleMove(x,y)) {
-			return null;
-		}
-		
-		whichDirection(x, y);
+    private void whichDirection(int x, int y) {
+        if (x != this.x) {
+            this.horizontal(x, y);
+        }
+        if (y != this.y) {
+            this.vertical(x, y);
+        }
+    }
 
-		return listToArray();
+    private boolean equalPosition(int x, int y) {
+        if (this.x == x && this.y == y) {
+            return true;
+        }
+        return false;
+    }
 
-	}
+    private Point[] listToArray() {
+        Point[] pointField = new Point[this.validMovesList.size()];
+        int i = 0;
+        for (Point point : this.validMovesList) {
+            if (i == 0) {
+                ++i;
+                continue;
+            }
+            pointField[i - 1] = point;
+            ++i;
+        }
+        this.validMovesList.clear();
+        return pointField;
+    }
 
-	private boolean possibleMove(int x, int y) {		
-		List<Point> allMoveList = new ArrayList<Point>();
-		Point move = new Point(x,y);
-		
-		allMoveList.add(new Point(this.x, y));
-		allMoveList.add(new Point(x, this.y));
-			
-		for (Point point : allMoveList) {
-			if(move.equals(point))
-				return false;
-		}
+    private void horizontal(int x, int y) {
+        if (this.x < x) {
+            this.rightHorizontal(x, y);
+        } else {
+            this.leftHorizontal(x, y);
+        }
+    }
 
-		return true;
-		
-	}
+    private void leftHorizontal(int x, int y) {
+        int i = this.x;
+        while (i >= x) {
+            this.validMovesList.add(new Point(i, y));
+            --i;
+        }
+    }
 
-	private boolean outRange(int x, int y) {
-		if(x >= 8 || x < 0) {
-			return true;
-		}
-		else if(y >= 8 || y < 0) {
-			return true;
-		}
-		
-		return false;
-	}
+    private void rightHorizontal(int x, int y) {
+        int i = this.x;
+        while (i <= x) {
+            this.validMovesList.add(new Point(i, y));
+            ++i;
+        }
+    }
 
-	private void whichDirection(int x, int y) {		
-		if (x != this.x) {
-			horizontal(x, y);
-		}
-		if (y != this.y)
-			vertical(x, y);	
-	}
+    private void vertical(int x, int y) {
+        if (this.y < y) {
+            this.upVertical(x, y);
+        } else {
+            this.downVertical(x, y);
+        }
+    }
 
-	private boolean equalPosition(int x, int y) {
-		if (this.x == x && this.y == y)
-			return true;
+    private void upVertical(int x, int y) {
+        int i = this.y;
+        while (i <= y) {
+            this.validMovesList.add(new Point(x, i));
+            ++i;
+        }
+    }
 
-		return false;
-	}
+    private void downVertical(int x, int y) {
+        int i = this.y;
+        while (i >= y) {
+            this.validMovesList.add(new Point(x, i));
+            --i;
+        }
+    }
 
-	private Point[] listToArray() {
-		Point pointField[] = new Point[validMovesList.size()];
-		int i = 0;
-		for (Point point : validMovesList) {
-			
-			if(i == 0) {
-				i++;	
-			} else {
-				pointField[i-1] = point;
-				i++;
-			}
-			
-		}
-		validMovesList.clear();
-
-		return pointField;
-	}
-
-	private void horizontal(int x, int y) {
-		if (this.x < x) {
-			rightHorizontal(x, y);
-		} else
-			leftHorizontal(x, y);
-
-	}
-
-	private void leftHorizontal(int x, int y) {
-		for (int i = this.x; i >= x; i--) {
-			validMovesList.add(new Point(i, y));
-		}
-	}
-
-	private void rightHorizontal(int x, int y) {
-		for (int i = this.x; i <= x; i++) { 
-			validMovesList.add(new Point(i, y));
-		}
-	}
-
-	private void vertical(int x, int y) {
-		if (this.y < y) {
-			upVertical(x, y);
-		} else {
-			downVertical(x, y);
-		}
-	}
-
-	private void upVertical(int x, int y) {
-		for (int i = this.y; i <= y; i++) {
-			validMovesList.add(new Point(x, i));
-		}
-	}
-
-	private void downVertical(int x, int y) {
-		for (int i = this.y; i >= y; i--) {
-			validMovesList.add(new Point(x, i));
-		}
-	}
-
-	
-
-	@Override
-	public char toChar() {
-		return 'T';
-	}
-
+    @Override
+    public char toChar() {
+        return 'T';
+    }
 }
+

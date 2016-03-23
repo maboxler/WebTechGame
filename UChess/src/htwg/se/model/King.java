@@ -1,162 +1,146 @@
+/*
+ * Decompiled with CFR 0_114.
+ */
 package htwg.se.model;
 
-import java.util.ArrayList;
-
+import htwg.se.model.Chesspiece;
 import htwg.util.Point;
-
+import java.util.ArrayList;
 import java.util.List;
 
-public class King extends Chesspiece {
+public class King
+extends Chesspiece {
+    private List<Point> validMovesList = new ArrayList<Point>();
 
-	private List<Point> validMovesList;
+    public King(int x, int y, char color) {
+        super(x, y, color);
+    }
 
-	public King(int x, int y, char color) {
-		super(x, y, color);
-		validMovesList = new ArrayList<Point>();
-	}
+    @Override
+    public Point[] validMove(int x, int y) {
+        if (this.equalPosition(x, y) || this.outRange(x, y) || this.oneSquare(x, y)) {
+            return null;
+        }
+        this.whichDirection(x, y);
+        return this.listToArray();
+    }
 
-	@Override
-	public Point[] validMove(int x, int y) {
+    private boolean oneSquare(int x, int y) {
+        if (!(this.x != x && this.x + 1 != x && this.x - 1 != x || this.y != y && this.y + 1 != y && this.y - 1 != y)) {
+            return false;
+        }
+        return true;
+    }
 
-		if (equalPosition(x, y) || outRange(x, y) || oneSquare(x, y)) {
-			return null;
-		}
+    private boolean outRange(int x, int y) {
+        if (x >= 8 || x < 0) {
+            return true;
+        }
+        if (y >= 8 || y < 0) {
+            return true;
+        }
+        return false;
+    }
 
-		whichDirection(x, y);
+    private void whichDirection(int x, int y) {
+        if (x != this.x && y == this.y) {
+            this.horizontal(x, y);
+        } else if (x == this.x) {
+            this.vertical(x, y);
+        } else {
+            this.diagonal(x, y);
+        }
+    }
 
-		return listToArray();
+    private boolean equalPosition(int x, int y) {
+        if (this.x == x && this.y == y) {
+            return true;
+        }
+        return false;
+    }
 
-	}
+    private Point[] listToArray() {
+        Point[] pointField = new Point[]{this.validMovesList.get(0)};
+        this.validMovesList.clear();
+        return pointField;
+    }
 
-	private boolean oneSquare(int x, int y) {		
-		if (this.x == x || (this.x + 1) == x || (this.x - 1) == x)
-			if (this.y == y || (this.y + 1) == y || (this.y - 1) == y){
-				return false;
-			}
-				
-		return true;
-	}
+    private void horizontal(int x, int y) {
+        if (this.x < x) {
+            this.rightHorizontal(x, y);
+        } else {
+            this.leftHorizontal(x, y);
+        }
+    }
 
-	private boolean outRange(int x, int y) {
-		if (x >= 8 || x < 0) {
-			return true;
-		} else if (y >= 8 || y < 0) {
-			return true;
-		}
+    private void leftHorizontal(int x, int y) {
+        this.validMovesList.add(new Point(x, y));
+    }
 
-		return false;
-	}
+    private void rightHorizontal(int x, int y) {
+        this.validMovesList.add(new Point(x, y));
+    }
 
-	private void whichDirection(int x, int y) {
-		if (x != this.x && y == this.y) {
-			horizontal(x, y);
-		} else if (x == this.x) {
-			vertical(x, y);
-		} else
-			diagonal(x, y);
-	}
+    private void vertical(int x, int y) {
+        if (this.y < y) {
+            this.upVertical(x, y);
+        } else {
+            this.downVertical(x, y);
+        }
+    }
 
-	private boolean equalPosition(int x, int y) {
-		if (this.x == x && this.y == y)
-			return true;
+    private void upVertical(int x, int y) {
+        this.validMovesList.add(new Point(x, y));
+    }
 
-		return false;
-	}
+    private void downVertical(int x, int y) {
+        this.validMovesList.add(new Point(x, y));
+    }
 
-	private Point[] listToArray() {
-		Point pointField[] = new Point[1];
-		
-		pointField[0] = validMovesList.get(0);
-		validMovesList.clear();
+    private void diagonal(int x, int y) {
+        if (this.y < y) {
+            this.upDiagonal(x, y);
+        } else {
+            this.downDiagonal(x, y);
+        }
+    }
 
-		return pointField;
-	}
+    private void upDiagonal(int x, int y) {
+        if (x < this.x) {
+            this.leftUpDiagonal(x);
+        } else {
+            this.rightUpDiagonal(x);
+        }
+    }
 
-	private void horizontal(int x, int y) {
-		if (this.x < x) {
-			rightHorizontal(x, y);
-		} else
-			leftHorizontal(x, y);
+    private void leftUpDiagonal(int x) {
+        this.validMovesList.add(new Point(this.x - 1, this.y + 1));
+    }
 
-	}
+    private void rightUpDiagonal(int x) {
+        this.validMovesList.add(new Point(this.x + 1, this.y + 1));
+    }
 
-	private void leftHorizontal(int x, int y) {
-			validMovesList.add(new Point(x, y));
-	}
+    private void downDiagonal(int x, int y) {
+        if (x < this.x) {
+            this.leftDownDiagonal(y);
+        } else {
+            this.rightDownDiagonal(x);
+        }
+    }
 
-	private void rightHorizontal(int x, int y) {
-			validMovesList.add(new Point(x, y));
-	}
+    private void leftDownDiagonal(int x) {
+        boolean n = false;
+        this.validMovesList.add(new Point(this.x - 1, this.y - 1));
+    }
 
-	private void vertical(int x, int y) {
-		if (this.y < y) {
-			upVertical(x, y);
-		} else {
-			downVertical(x, y);
-		}
-	}
+    private void rightDownDiagonal(int x) {
+        this.validMovesList.add(new Point(this.x + 1, this.y - 1));
+    }
 
-	private void upVertical(int x, int y) {
-			validMovesList.add(new Point(x, y));
-	}
-
-	private void downVertical(int x, int y) {
-			validMovesList.add(new Point(x, y));
-	}
-
-	private void diagonal(int x, int y) {
-		if (this.y < y) {
-			upDiagonal(x, y);
-		} else {
-			downDiagonal(x, y);
-		}
-
-	}
-
-	private void upDiagonal(int x, int y) {
-		if (x < this.x) {
-			leftUpDiagonal(x);
-		} else {
-			rightUpDiagonal(x);
-		}
-
-	}
-
-	private void leftUpDiagonal(int x) {
-			validMovesList.add(new Point(this.x - 1, this.y + 1));
-
-	}
-
-	private void rightUpDiagonal(int x) {
-			validMovesList.add(new Point(this.x + 1, this.y + 1));
-	}
-
-	private void downDiagonal(int x, int y) {
-		if (x < this.x) {
-			leftDownDiagonal(y);
-		} else {
-			rightDownDiagonal(x);
-		}
-
-	}
-
-	private void leftDownDiagonal(int x) {
-		int n = 0;
-		//for (int i = this.x; i >= x; i--) {
-			validMovesList.add(new Point(this.x - 1, this.y - 1));
-			//n++;
-		//}
-
-	}
-
-	private void rightDownDiagonal(int x) {
-			validMovesList.add(new Point(this.x + 1, this.y - 1));
-
-	}
-
-	@Override
-	public char toChar() {
-		return 'K';
-	}
-
+    @Override
+    public char toChar() {
+        return 'K';
+    }
 }
+
